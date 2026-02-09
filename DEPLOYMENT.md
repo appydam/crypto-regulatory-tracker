@@ -1,6 +1,6 @@
 # Deployment & Testing Report
 
-## Test Run: Feb 9, 2026
+## Test Run: Feb 9, 2026 (Updated with Puppeteer)
 
 ### Scraper Status
 
@@ -9,12 +9,12 @@
 | SEC Press Releases | ✅ Working | 25 | 4 | RSS feed works |
 | SEC Litigation | ❌ Blocked | 0 | 0 | 403 Forbidden - may need auth |
 | ESMA | ✅ Working | 26 | 2 | RSS blocked, HTML fallback works |
-| MAS | ⚠️ Needs Work | 0 | 0 | JS-rendered, needs browser scraping |
+| MAS | ✅ Working | 16 | 0 | Browser scraper works, no crypto news this period |
 | JFSA | ✅ Working | 1 | 0 | Low volume, no crypto items this period |
-| VARA | ⚠️ Needs Work | 0 | 0 | JS-rendered, needs browser scraping |
+| VARA | ✅ Working | 21 | 21 | Browser scraper works, all items crypto-related |
 
-**Total Functional Sources:** 3/5 (SEC, ESMA, JFSA)
-**Total Crypto Items Found:** 6
+**Total Functional Sources:** 5/5 ✅
+**Total Crypto Items Found:** 27
 
 ### Required Environment Variables
 
@@ -38,16 +38,11 @@ The litigation RSS feed returns 403. Options:
 - Add custom headers/authentication
 - Scrape the HTML page directly
 
-#### 2. MAS JS-Rendered
-Singapore MAS news page is JavaScript-rendered. Options:
-- Use Puppeteer/Playwright for browser scraping
-- Check for MAS API endpoints
-- Use third-party news aggregator APIs
+#### 2. ~~MAS JS-Rendered~~ ✅ FIXED
+Added Puppeteer browser scraper fallback. Now finds 16+ news items.
 
-#### 3. VARA JS-Rendered
-Dubai VARA news is also JS-rendered. Options:
-- Use Puppeteer/Playwright
-- VARA may have an API (they're crypto-focused)
+#### 3. ~~VARA JS-Rendered~~ ✅ FIXED
+Added Puppeteer browser scraper fallback. Now finds 21+ crypto items.
 
 ### Deployment Steps
 

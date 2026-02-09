@@ -58,13 +58,13 @@ npm run dev pipeline  # Full pipeline: scrape → classify → report
 
 | Source | Method | Status | Notes |
 |--------|--------|--------|-------|
-| SEC (US) | RSS | ✅ Working | Press releases work, Litigation blocked |
+| SEC (US) | RSS | ✅ Working | Press releases work, Litigation blocked (403) |
 | ESMA (EU) | RSS + HTML | ✅ Working | RSS blocked, HTML fallback works |
-| MAS (Singapore) | RSS + HTML | ⚠️ Limited | JS-rendered, needs browser scraping |
+| MAS (Singapore) | RSS + Puppeteer | ✅ Working | Browser fallback for JS-rendered content |
 | JFSA (Japan) | HTML scrape | ✅ Working | Low volume, keyword filtering |
-| VARA (Dubai) | HTML scrape | ⚠️ Limited | JS-rendered, needs browser scraping |
+| VARA (Dubai) | HTML + Puppeteer | ✅ Working | Browser fallback, 21 crypto items |
 
-**Note:** MAS and VARA sites are JavaScript-rendered. Full support requires Puppeteer/Playwright integration. See `DEPLOYMENT.md` for details.
+**All 5 sources functional!** Browser fallback automatically activates for JS-rendered sites.
 
 ## Pipeline Flow
 

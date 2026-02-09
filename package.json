@@ -9,6 +9,9 @@
     "scrape:sec": "tsx src/scrapers/sec.ts",
     "scrape:esma": "tsx src/scrapers/esma.ts",
     "scrape:mas": "tsx src/scrapers/mas.ts",
+    "scrape:mas-browser": "tsx src/scrapers/mas-browser.ts",
+    "scrape:vara-browser": "tsx src/scrapers/vara-browser.ts",
+    "scrape:browser": "USE_BROWSER=true tsx src/scrape.ts",
     "classify": "tsx src/classify.ts",
     "report": "tsx src/report.ts",
     "send": "tsx src/send.ts",
@@ -19,6 +22,7 @@
     "@anthropic-ai/sdk": "^0.32.0",
     "@supabase/supabase-js": "^2.39.0",
     "cheerio": "^1.0.0",
+    "puppeteer": "^24.37.2",
     "resend": "^4.0.0",
     "rss-parser": "^3.13.0"
   },
