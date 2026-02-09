@@ -1,0 +1,31 @@
+{
+  "name": "crypto-regulatory-tracker",
+  "version": "1.0.0",
+  "description": "Weekly crypto regulatory intelligence pipeline",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "scrape": "tsx src/scrape.ts",
+    "scrape:sec": "tsx src/scrapers/sec.ts",
+    "scrape:esma": "tsx src/scrapers/esma.ts",
+    "scrape:mas": "tsx src/scrapers/mas.ts",
+    "classify": "tsx src/classify.ts",
+    "report": "tsx src/report.ts",
+    "send": "tsx src/send.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "cheerio": "^1.0.0",
+    "resend": "^4.0.0",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "dotenv": "^16.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
