@@ -56,13 +56,15 @@ npm run dev pipeline  # Full pipeline: scrape → classify → report
 
 ## Data Sources
 
-| Source | Method | Frequency |
-|--------|--------|-----------|
-| SEC (US) | RSS | Every 6h |
-| ESMA (EU) | RSS | Every 6h |
-| MAS (Singapore) | RSS | Every 6h |
-| JFSA (Japan) | HTML scrape | Every 6h |
-| VARA (Dubai) | HTML scrape | Every 6h |
+| Source | Method | Status | Notes |
+|--------|--------|--------|-------|
+| SEC (US) | RSS | ✅ Working | Press releases work, Litigation blocked |
+| ESMA (EU) | RSS + HTML | ✅ Working | RSS blocked, HTML fallback works |
+| MAS (Singapore) | RSS + HTML | ⚠️ Limited | JS-rendered, needs browser scraping |
+| JFSA (Japan) | HTML scrape | ✅ Working | Low volume, keyword filtering |
+| VARA (Dubai) | HTML scrape | ⚠️ Limited | JS-rendered, needs browser scraping |
+
+**Note:** MAS and VARA sites are JavaScript-rendered. Full support requires Puppeteer/Playwright integration. See `DEPLOYMENT.md` for details.
 
 ## Pipeline Flow
 

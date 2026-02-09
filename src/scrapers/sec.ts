@@ -28,11 +28,12 @@ const SEC_FEEDS = [
   },
 ];
 
-// Keywords to filter crypto-related content
+// Keywords to filter crypto-related content (precise - avoid "exchange" alone)
 const CRYPTO_KEYWORDS = [
   'crypto', 'cryptocurrency', 'bitcoin', 'ethereum', 'digital asset',
-  'blockchain', 'token', 'defi', 'stablecoin', 'nft', 'ico', 'exchange',
+  'blockchain', 'defi', 'stablecoin', 'nft', 'ico',
   'binance', 'coinbase', 'kraken', 'ftx', 'celsius', 'terraform',
+  'virtual currency', 'digital currency', 'crypto exchange', 'token offering',
 ];
 
 function isPotentiallyCrypto(text: string): boolean {
