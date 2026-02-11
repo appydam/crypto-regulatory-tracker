@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Regulatory Tracker - Real-time Compliance Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tagline {
+            font-size: 20px;
+            color: #94a3b8;
+            font-weight: 300;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 28px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 42px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        
+        .stat-sublabel {
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+        
+        .chart-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 28px;
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #f1f5f9;
+        }
+        
+        .events-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+        
+        .filter-pills {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-pill {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-pill:hover,
+        .filter-pill.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+        
+        .events-list {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .event-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .event-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+        }
+        
+        .event-card.high::before {
+            background: #ef4444;
+        }
+        
+        .event-card.medium::before {
+            background: #f59e0b;
+        }
+        
+        .event-card.low::before {
+            background: #10b981;
+        }
+        
+        .event-card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .event-meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .source-badge {
+            padding: 4px 12px;
+            background: #3b82f6;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .jurisdiction-badge {
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+        
+        .impact-badge {
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .impact-badge.high {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+        
+        .impact-badge.medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fcd34d;
+        }
+        
+        .impact-badge.low {
+            background: rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
+        }
+        
+        .event-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f1f5f9;
+            margin-bottom: 8px;
+        }
+        
+        .event-summary {
+            font-size: 15px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        
+        .event-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .event-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            padding: 4px 10px;
+            background: rgba(147, 51, 234, 0.2);
+            border-radius: 4px;
+            font-size: 12px;
+            color: #c4b5fd;
+        }
+        
+        .event-date {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 18px;
+            color: #94a3b8;
+        }
+        
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 32px;
+            }
+            
+            .tagline {
+                font-size: 16px;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-value {
+                font-size: 32px;
+            }
+            
+            .filter-pills {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Crypto Regulatory Tracker</h1>
+            <p class="tagline">Real-time compliance intelligence across 5 major jurisdictions</p>
+        </header>
+        
+        <div id="loading" class="loading">
+            <div class="loader"></div>
+            <p>Loading regulatory data...</p>
+        </div>
+        
+        <div id="dashboard" style="display: none;">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Events</div>
+                    <div class="stat-value" id="stat-total">0</div>
+                    <div class="stat-sublabel">Last 30 days</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">High Impact</div>
+                    <div class="stat-value" id="stat-high">0</div>
+                    <div class="stat-sublabel">Requires immediate attention</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Jurisdictions</div>
+                    <div class="stat-value">5</div>
+                    <div class="stat-sublabel">US, EU, SG, JP, AE</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Last Updated</div>
+                    <div class="stat-value" style="font-size: 24px;" id="stat-updated">—</div>
+                    <div class="stat-sublabel">Live monitoring</div>
+                </div>
+            </div>
+            
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Events by Jurisdiction</div>
+                    <canvas id="jurisdictionChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Impact Distribution</div>
+                    <canvas id="impactChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Events by Category</div>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Events Section -->
+            <div class="events-section">
+                <div class="section-header">
+                    <h2>Recent Events</h2>
+                    <div class="filter-pills">
+                        <div class="filter-pill active" data-filter="all">All</div>
+                        <div class="filter-pill" data-filter="high">High Impact</div>
+                        <div class="filter-pill" data-filter="medium">Medium</div>
+                        <div class="filter-pill" data-filter="low">Low</div>
+                    </div>
+                </div>
+                <div class="events-list" id="events-list"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let allEvents = [];
+        let currentFilter = 'all';
+        
+        // Load and display data
+        async function loadData() {
+            try {
+                const response = await fetch('sample-data.json');
+                const data = await response.json();
+                
+                allEvents = data.events;
+                
+                // Update stats
+                document.getElementById('stat-total').textContent = data.stats.totalEvents;
+                document.getElementById('stat-high').textContent = data.stats.byImpact.high;
+                
+                const lastUpdated = new Date(data.stats.lastUpdated);
+                document.getElementById('stat-updated').textContent = lastUpdated.toLocaleDateString();
+                
+                // Render charts
+                renderJurisdictionChart(data.stats.byJurisdiction);
+                renderImpactChart(data.stats.byImpact);
+                renderCategoryChart(data.stats.byCategory);
+                
+                // Render events
+                renderEvents();
+                
+                // Hide loading, show dashboard
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                
+                // Setup filters
+                document.querySelectorAll('.filter-pill').forEach(pill => {
+                    pill.addEventListener('click', () => {
+                        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+                        pill.classList.add('active');
+                        currentFilter = pill.dataset.filter;
+                        renderEvents();
+                    });
+                });
+            } catch (error) {
+                document.getElementById('loading').innerHTML = '<p>Error loading data. Please refresh the page.</p>';
+            }
+        }
+        
+        function renderEvents() {
+            const container = document.getElementById('events-list');
+            const filtered = currentFilter === 'all' 
+                ? allEvents 
+                : allEvents.filter(e => e.impact === currentFilter);
+            
+            container.innerHTML = filtered.map(event => `
+                <div class="event-card ${event.impact}">
+                    <div class="event-header">
+                        <div class="event-meta">
+                            <span class="source-badge">${event.source}</span>
+                            <span class="jurisdiction-badge">${event.jurisdiction}</span>
+                        </div>
+                        <span class="impact-badge ${event.impact}">${event.impact} impact</span>
+                    </div>
+                    <div class="event-title">${event.title}</div>
+                    <div class="event-summary">${event.summary}</div>
+                    <div class="event-footer">
+                        <div class="event-tags">
+                            ${event.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="event-date">${new Date(event.publishedAt).toLocaleDateString('en-US', {
+                            month: 'short', day: 'numeric', year: 'numeric'
+                        })}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function renderJurisdictionChart(data) {
+            const ctx = document.getElementById('jurisdictionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        label: 'Events',
+                        data: Object.values(data),
+                        backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderImpactChart(data) {
+            const ctx = document.getElementById('impactChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['High', 'Medium', 'Low'],
+                    datasets: [{
+                        data: [data.high, data.medium, data.low],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.6)',
+                            'rgba(245, 158, 11, 0.6)',
+                            'rgba(16, 185, 129, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(16, 185, 129, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderCategoryChart(data) {
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data).map(label => label.length > 15 ? label.substring(0, 15) + '...' : label),
+                    datasets: [{
+                        label: 'Events',
+                        data: Object.values(data),
+                        backgroundColor: 'rgba(147, 51, 234, 0.6)',
+                        borderColor: 'rgba(147, 51, 234, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

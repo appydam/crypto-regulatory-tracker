@@ -1,21 +1,46 @@
 # Crypto Regulatory Tracker
 
-Automated weekly crypto regulatory intelligence pipeline for compliance teams.
+Automated weekly crypto regulatory intelligence pipeline for compliance teams. Real-time monitoring across 5 major jurisdictions with AI-powered impact assessment and beautiful analytics dashboard.
 
-## Features
+## ✨ Features
 
+### 📊 Web Dashboard (NEW!)
+- **Real-time Analytics**: Interactive charts showing events by jurisdiction, impact, and category
+- **Event Feed**: Filterable list of regulatory events with rich metadata
+- **Impact Indicators**: Color-coded high/medium/low impact ratings
+- **Responsive Design**: Works beautifully on desktop, tablet, and mobile
+- **Demo Mode**: Pre-loaded with sample data for instant preview
+
+### 🤖 Automation Pipeline
 - **5 Jurisdiction Coverage**: SEC (US), ESMA (EU), MAS (Singapore), JFSA (Japan), VARA (Dubai)
 - **Smart Filtering**: Keyword + LLM classification to identify crypto-related updates
 - **Impact Rating**: High/Medium/Low impact assessment via Claude Haiku
 - **Weekly Reports**: Auto-generated newsletter-style digest
 - **Email Delivery**: Resend integration for subscriber management
 
-## Quick Start
+## 🚀 Quick Start
+
+### Web Dashboard (Instant Demo)
 
 ```bash
-# Install dependencies
+# Install dependencies (one-time)
 npm install
 
+# Launch demo dashboard
+npm run demo
+```
+
+Opens http://localhost:8080 with a beautiful dashboard showing sample regulatory events, analytics charts, and filtering.
+
+**Perfect for:**
+- Investor demos
+- Product pitches
+- User testing
+- Understanding the data model
+
+### Automation Pipeline
+
+```bash
 # Copy environment template
 cp .env.example .env
 # Edit .env with your credentials
@@ -75,28 +100,51 @@ npm run dev pipeline  # Full pipeline: scrape → classify → report
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
 ```
 
-## Project Structure
+## 🌐 Deploying the Dashboard
+
+The web dashboard is a static site in the `public/` folder. Deploy options:
+
+### GitHub Pages (Recommended)
+```bash
+# Enable GitHub Pages in repo settings → Pages → Source: main branch /public folder
+# Your dashboard will be live at: https://username.github.io/crypto-regulatory-tracker/
+```
+
+### Vercel / Netlify
+```bash
+# Deploy the public/ folder
+# Build command: (none - static site)
+# Publish directory: public
+```
+
+### Anywhere with HTTPS
+The dashboard is pure HTML/CSS/JS. Upload the `public/` folder to any static hosting service.
+
+## 📁 Project Structure
 
 ```
 crypto-regulatory-tracker/
+├── public/                    # Web dashboard (NEW!)
+│   ├── index.html            # Dashboard UI
+│   └── sample-data.json      # Demo data
 ├── src/
 │   ├── scrapers/
-│   │   ├── sec.ts      # SEC RSS scraper
-│   │   ├── esma.ts     # ESMA RSS scraper
-│   │   ├── mas.ts      # MAS RSS scraper
-│   │   ├── jfsa.ts     # JFSA HTML scraper
-│   │   ├── vara.ts     # VARA HTML scraper
-│   │   └── index.ts    # Scraper orchestrator
-│   ├── classify.ts     # LLM classification
-│   ├── report.ts       # Report generator
-│   ├── send.ts         # Email delivery
-│   ├── db.ts           # Supabase client
-│   ├── config.ts       # Configuration
-│   ├── types.ts        # TypeScript types
-│   ├── scrape.ts       # Scrape runner
-│   └── index.ts        # Main CLI
+│   │   ├── sec.ts            # SEC RSS scraper
+│   │   ├── esma.ts           # ESMA RSS scraper
+│   │   ├── mas.ts            # MAS RSS scraper
+│   │   ├── jfsa.ts           # JFSA HTML scraper
+│   │   ├── vara.ts           # VARA HTML scraper
+│   │   └── index.ts          # Scraper orchestrator
+│   ├── classify.ts           # LLM classification
+│   ├── report.ts             # Report generator
+│   ├── send.ts               # Email delivery
+│   ├── db.ts                 # Supabase client
+│   ├── config.ts             # Configuration
+│   ├── types.ts              # TypeScript types
+│   ├── scrape.ts             # Scrape runner
+│   └── index.ts              # Main CLI
 ├── sql/
-│   └── schema.sql      # Database schema
+│   └── schema.sql            # Database schema
 ├── .env.example
 ├── package.json
 └── README.md

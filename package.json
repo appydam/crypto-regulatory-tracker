@@ -16,7 +16,8 @@
     "report": "tsx src/report.ts",
     "send": "tsx src/send.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "demo": "npx http-server public -p 8080 -o"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.0",
